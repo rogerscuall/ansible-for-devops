@@ -34,13 +34,16 @@
       file: "path={{ node_apps_location }} state=directory"
 
     - name: Copy example Node.js app to server.
-      copy: "src=files/app.js dest={{ node_apps_location }}/app"
+      copy: "src=files/app.js dest={{ node_apps_location }}/app/"
       
     - name: Copy package.json to app server
       copy: 
         src: files/package.json
-        dest: /home/vagrant
-
+        dest: "{{ item }}"
+          with_items:
+            - "/home/vagrant"
+            - "/usr/local/opt/node/app/"
+    
     - name: Install app dependencies defined in package.json.
       npm: "path={{ node_apps_location }}/app"
 
