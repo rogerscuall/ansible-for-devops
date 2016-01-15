@@ -1,6 +1,7 @@
 ---
 - hosts: all
-
+  name: CentOS Node.js app server
+  sudo: yes
   vars:
     # Vars can also be passed in via CLI with `--extra-vars="name=value"`.
     node_apps_location: /usr/local/opt/node
@@ -33,7 +34,7 @@
       file: "path={{ node_apps_location }} state=directory"
 
     - name: Copy example Node.js app to server.
-      copy: "src=app dest={{ node_apps_location }}"
+      copy: "src=files/app.js dest={{ node_apps_location }}"
 
     - name: Install app dependencies defined in package.json.
       npm: "path={{ node_apps_location }}/app"
