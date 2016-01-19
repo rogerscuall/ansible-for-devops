@@ -1,6 +1,6 @@
 ---
 - hosts: all
-
+  sudo: yes
   vars_files:
     - vars.yml
 
@@ -32,12 +32,9 @@
       command: >
         tar -C /tmp -xvzf {{ download_dir }}/solr-{{ solr_version }}.tgz
         creates={{ download_dir }}/solr-{{ solr_version }}/dist/solr-{{ solr_version }}.war
-
-    - name: Copy Solr into place.
-      command: >
-        cp -r {{ download_dir }}/solr-{{ solr_version }} \
-        {{ solr_dir }}
-        creates={{ solr_dir }}/dist/solr-{{ solr_version }}.war
+        
+    - name: Create the destination directory for Solr
+      file: path={{solr_dir}} state=directory
 
     # Use shell so commands are passed in correctly.
     - name: Copy Solr components into place.
